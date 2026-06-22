@@ -1,6 +1,6 @@
-const { getUserInfo, getUserOrders, getUserCartItems } = require('./utils');
+const { getUserInfo, getUserOrders, getUserCartItems } = require("./utils");
 
-function getUserData(userId) {
+async function getUserData(userId) {
   /**
    * @TODO
    * Dapatkan nilai:
@@ -18,7 +18,21 @@ function getUserData(userId) {
    *
    *  Jika ada salah satu Promise yang rejected, kembalikan fungsi ini dengan nilai `null`.
    */
+  try {
+    const [userInfo, userOrders, userCartItems] = await Promise.all([
+      getUserInfo(userId),
+      getUserOrders(userId),
+      getUserCartItems(userId),
+    ]);
 
+    return {
+      userInfo,
+      userOrders,
+      userCartItems,
+    };
+  } catch (error) {
+    return null;
+  }
 }
 
 function main() {
